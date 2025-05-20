@@ -1,20 +1,23 @@
 import React from 'react';
-import ToDo from './ToDo'; 
+import ToDo from './ToDo';
+import DiariesList from './DiariesList'; 
 
 function App() {
   const todos = [
-    { task: "Iemācīties React", completed: false },
-    { task: "Iemācīties Laravel", completed: true },
-    { task: "Nopirkt pienu", completed: false },
+    { id: 1, task: "Iemācīties React", completed: false },
+    { id: 2, task: "Iemācīties Laravel", completed: true },
+    { id: 3, task: "Nopirkt pienu", completed: false },
   ];
+
   return (
-    <div>
-      <h1>Mani uzdevumi</h1>
-      <ToDo task="Iemācīties React" completed={false} />
-      <ToDo task="Nokārtot eksāmenu" completed={true} />
-      <ToDo task="Iemācīties Laravel" completed={false} />
-      <ToDo task="Nopirkt pienu " completed={false} />
-    </div>
+    <>
+      <h1>Veicamie uzdevumi</h1>
+
+      {todos.map((todo) => {
+        return <ToDo key={todo.id} {...todo} />;
+      })}
+          <DiariesList />
+    </>
   );
 }
 
