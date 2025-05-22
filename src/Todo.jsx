@@ -1,24 +1,24 @@
+import React from 'react';
 
-import React, { useState } from 'react';
-
-
-
-function ToDo({ task, completed }) {
-
-    const [check, setCheck] = useState(completed);
-
-    return (
-        <label>
-        <input
-          type="checkbox"
-          checked={check}  // checkbox būs atzīmēts, ja `check` ir true
-          onChange={() => setCheck(!check)}  // mainām stāvokli, kad tiek noklikšķināts
-        />
-        {task}  {/* Izvēlētā uzdevuma teksts */}
+function ToDo({ id, task, completed, onToggle, onDelete }) {
+  return (
+    <article>
+      <label>
+      <input
+  type="checkbox"
+  checked={completed}
+  onChange={() => onToggle(id)}
+/>
+   
+        <span style={{ textDecoration: completed ? 'line-through' : 'none' }}>
+          {task}
+        </span>
       </label>
-    );
-  }
-  
-  export default ToDo;
-  
-  
+      
+      {/* Šī ir dzēšanas poga */}
+      <button onClick={onDelete}>❌</button>
+    </article>
+  );
+}
+
+export default ToDo;
