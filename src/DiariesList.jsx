@@ -1,40 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Diary from './Diary';
 
+function getLocalDiaries() {
+  const stored = localStorage.getItem("diaries");
+  return stored ? JSON.parse(stored) : [];
+}
+
 function DiariesList() {
-  const [diaries, setDiaries] = useState([
-    {
-      id: 1,
-      title: "Pirmdienas piedzīvojums",
-      body: "Šodien bija saulaina diena un devos pastaigā pa mežu.",
-      date: "2025-05-19"
-    },
-    {
-      id: 2,
-      title: "Otrdienas pārdomas",
-      body: "Strādāju pie React projekta un iemācījos par komponentēm.",
-      date: "2025-05-20"
-    },
-    {
-      id: 3,
-      title: "Trešdienas miers",
-      body: "Pavadīju dienu ar grāmatu rokās un dzēru tēju.",
-      date: "2025-05-21"
-    },
-  ]);
+  const [diaries, setDiaries] = useState(getLocalDiaries);
 
   const handleAddDiary = (title, body) => {
-    const newDiary = { id: Date.now(), title, body, date: new Date().toISOString() };
+    const newDiary = {
+      id: Date.now(),
+      title,
+      body,
+      date: new Date().toISOString()
+    };
     setDiaries((prevDiaries) => [...prevDiaries, newDiary]);
   };
 
   const handleDeleteDiary = (id) => {
-    setDiaries((prevDiaries) => prevDiaries.filter(diary => diary.id !== id));
+    setDiaries((prevDiaries) =>
+      prevDiaries.filter((diary) => diary.id !== id)
+    );
   };
+
+  useEffect(() => {
+    localStorage.setItem("diaries", JSON.stringify(diaries));
+  }, [diaries]);
 
   return (
     <>
       <h1>Dienasgrāmatas ieraksti</h1>
+
       {diaries.map((diary) => (
         <Diary
           key={diary.id}
@@ -43,11 +41,14 @@ function DiariesList() {
         />
       ))}
 
-      {/* Formas pievienošana dienasgrāmatas ieraksta pievienošanai */}
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          handleAddDiary(event.target.title.value, event.target.body.value);
+          handleAddDiary(
+            event.target.title.value,
+            event.target.body.value
+          );
+          event.target.reset();
         }}
       >
         <label>

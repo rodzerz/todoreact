@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import ToDo from './ToDo';
-import DiariesList from './DiariesList';  // Pievienojam importu no 'DiariesList' komponentei
+import DiariesList from './DiariesList';  
+import { useEffect } from "react";
+
+
+
+function getLocalTodos() {
+  const stored = localStorage.getItem("todos");
+  return stored ? JSON.parse(stored) : [];
+}
+
 
 function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, task: "Iemācīties React", completed: false },
-    { id: 2, task: "Iemācīties Laravel", completed: true },
-    { id: 3, task: "Nopirkt pienu", completed: false },
-  ]);
+  const [todos, setTodos] = useState(getLocalTodos);
 
   const [newTask, setNewTask] = useState("");
 
@@ -33,6 +38,11 @@ function App() {
   const handleDelete = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
 
   return (
     <>

@@ -7,7 +7,7 @@ function Diary({ id, title, body, date, onDelete }) {
       <p>{body}</p>
       <small>{date}</small>
       {/* Kad nospiež poga, izsaucam onDelete ar id */}
-      <button onClick={() => onDelete(id)}>❌ Dzēst</button>
+      <button onClick={() => onDelete()}>❌ Dzēst</button>
     </article>
   );
 }
